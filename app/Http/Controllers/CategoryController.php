@@ -7,52 +7,66 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    //
-    function getAll(){
-        return Category::all();
+    public function index()
+    {
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
-    function getById($id){
-        return Category::find($id);
+    public function show($id)
+    {
+        $category = Category::find($id);
+        if(!$category) {
+            return response()->json(['message' => 'Kategori bulunamadı.'], 404);
+        }
+        return response()->json($category);
     }
 
-    function add(Request $request){
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:categories'
+        ]);
+
         $category = new Category;
         $category->category_name = $request->category_name;
-        $result=$category->save();
+        $category->save();
 
-        if($result){
-            return ["result"=>"Kategori Eklendi"];
-        }else{
-            return ["result"=>"Hata Oluştu"];
-        }
-        
+        return response()->json(['message' => 'Kategori eklendi.', 'category' => $category]);
     }
 
-    function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $category = Category::find($id);
+        if(!$category) {
+            return response()->json(['message' => 'Kategori bulunamadı.'], 404);
+        }
+
+        $this->validate($request, [
+            'category_name' => 'required|unique:categories,category_name,'.$id
+        ]);
+
         $category->category_name = $request->category_name;
-        $result=$category->save();
+        $category->save();
 
-        if($result){
-            return ["result"=>"Kategori güncellendi"];
-        }else{
-            return ["result"=>"Hata Oluştu"];
-        }
+        return response()->json(['message' => 'Kategori güncellendi.', 'category' => $category]);
     }
 
-    function search($name){
-        return Category::where("category_name","like","%".$name."%")->get();
+    public function search(Request $request)
+    {
+        $categories = Category::where("category_name", "like", "%" . $request->name . "%")->get();
+        return response()->json($categories);
     }
 
-    function delete($id){
+    public function destroy($id)
+    {
         $category = Category::find($id);
-        $result=$category->delete();
-
-        if($result){
-            return ["result"=>"Kategori silindi"];
-        }else{
-            return ["result"=>"Hata Oluştu"];
+        if(!$category) {
+            return response()->json(['message' => 'Kategori bulunamadı.'], 404);
         }
+
+        $category->delete();
+        return response()->json(['message' => 'Kategori silindi.']);
+        
     }
 }

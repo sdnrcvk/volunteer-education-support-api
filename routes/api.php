@@ -18,10 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("categories",[CategoryController::class,"getAll"]);
-Route::get("categories/{id}",[CategoryController::class,"getById"]);
-Route::post("categories",[CategoryController::class,"add"]);
+Route::get("categories",[CategoryController::class,"index"]);
+Route::get("categories/{id}",[CategoryController::class,"show"]);
+Route::post("categories",[CategoryController::class,"store"]);
 Route::put("categories/{id}",[CategoryController::class,"update"]);
 Route::get("search-categories/{name}",[CategoryController::class,"search"]);
-Route::delete("categories/{id}",[CategoryController::class,"delete"]);
+Route::delete("categories/{id}",[CategoryController::class,"destroy"]);
 
