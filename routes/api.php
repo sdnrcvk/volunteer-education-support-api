@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProvinceController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +29,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 });
 
+//User routes
 Route::post("login",[UserController::class,'login']);
 Route::post("register",[UserController::class,'register']);
 Route::get("users",[UserController::class,"index"]);
@@ -35,4 +38,8 @@ Route::get("users",[UserController::class,"index"]);
 Route::get("categories",[CategoryController::class,"index"]);
 Route::get("categories/{id}",[CategoryController::class,"show"]);
 Route::get("search-categories/{name}",[CategoryController::class,"search"]);
+
+//City-District routes
+Route::get("cities",[ProvinceController::class,"indexCity"]);
+Route::get("districts",[ProvinceController::class,"indexDistrict"]);
 
