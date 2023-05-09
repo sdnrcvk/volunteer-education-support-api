@@ -16,11 +16,14 @@ class ProvinceController extends Controller
         return response()->json(['cities' => $cities],200);
     }
 
-    public function indexDistrict()
+    public function indexDistrict($id)
     {
-        $districts = District::all();
-        return response()->json(['districts' => $districts],200);
-    }
+        $districts = District::where('city_id', $id)->get();
 
+        if($districts->isEmpty()) {
+            return response()->json(['message' => 'İlçe bulunamadı.'], 404);
+        }
+        return response()->json(['districts' => $districts], 200);
+    }
    
 }
