@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User_detail;
+use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 
 class UserDetailController extends Controller
@@ -34,7 +35,7 @@ class UserDetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User_detail $user_detail)
+    public function show()
     {
         //
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('instagram_url')->nullable();
             $table->string('linkedin_url')->nullable();
             $table->text('user_about')->nullable();
+            $table->string('task_definition')->nullable();
             $table->date('birthdate');
             $table->string('phone_number')->unique();
             $table->enum('gender', ['male', 'female', 'unselected'])->default('unselected');
@@ -25,9 +26,7 @@ return new class extends Migration
             $table->foreignId('district_id')->constraint();
             $table->string('image_path')->nullable();
             $table->enum('user_type', ['admin', 'user'])->default('user');
-            $table->softDeletes();
             $table->timestamps();
-
         });
     }
 
