@@ -12,15 +12,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $courses = Course::all();
+        return response()->json($courses);
     }
 
     /**
@@ -28,38 +21,81 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $course = new Course([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'user_id' => $request->input('user_id'),
+            'category_id'=>$request->input('category_id'),
+            'image_path'=>$request->input('image_path'),
+            'is_confirm'=>$request->input('is_confirm')
+        ]);
+
+        $course->save();
+        
+        return response()->json($course);
+
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        //
+        $course = Course::find($id);
+    
+        if(!$course) {
+            return response()->json(['error' => 'Kurs bulunamadı.'], 404);
+        }
+    
+        return response()->json($course);
+    }
+    
+
+    public function getCoursesByUser($user_id)
+    {
+        $courses = Course::where('user_id', $user_id)->get();
+        return response()->json($courses);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Course $course)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, $id)
     {
-        //
+        $course = Course::find($id);
+    
+        if(!$course) {
+            return response()->json(['error' => 'Kurs bulunamadı.'], 404);
+        }
+    
+        $course->title = $request->input('title');
+        $course->description = $request->input('description');
+        $course->category_id = $request->input('category_id');
+        $course->image_path = $request->input('image_path');
+        $course->is_confirm = $request->input('is_confirm');
+        $course->save();
+    
+        return response()->json($course);
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy($id)
     {
-        //
+        $course = Course::find($id);
+    
+        if(!$course) {
+            return response()->json(['error' => 'Kurs bulunamadı.'], 404);
+        }
+    
+        $course->delete();
+    
+        return response()->json(['message' => 'Kurs başarıyla silindi.']);
     }
+    
 }

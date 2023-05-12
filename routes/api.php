@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +59,11 @@ Route::get("districts/{id}",[ProvinceController::class,"indexDistrict"]);
 Route::get("messages",[MessageController::class,"index"]);
 Route::post("messages",[MessageController::class,"store"]);
 Route::delete("messages/{id}", [MessageController::class,"destroy"]);
+
+//Courses routes
+Route::get("courses",[CourseController::class,"index"]);
+Route::get("course/{id}",[CourseController::class,"show"]);
+Route::get("courses/{id}",[CourseController::class,"getCoursesByUser"]);
+Route::post("courses",[CourseController::class,"store"]);
+Route::put("courses/{id}",[CourseController::class,"update"]);
+Route::delete("courses/{id}",[CourseController::class,"destroy"]);
