@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserDetail;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
@@ -50,5 +51,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetail::class);
     }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
 
 }
