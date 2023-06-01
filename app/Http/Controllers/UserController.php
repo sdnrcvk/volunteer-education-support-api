@@ -16,14 +16,16 @@ class UserController extends Controller
         // print_r($data);
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response([
-                    'message' => ['These credentials do not match our records.']
+                    'errors' => ['Kullanıcı adı veya şifre yanlış']
                 ], 404);
             }
 
              $token = $user->createToken('my-app-token')->plainTextToken;
 
+             $userWithDetails = User::with('detail')->find($user->id);
+
             $response = [
-                'user' => $user,
+                'user' => $userWithDetails,
                 'token' => $token
             ];
 
@@ -84,10 +86,7 @@ class UserController extends Controller
 
         $user->detail()->save($userDetail);
 
-        //return response()->json($user);
-
-        // Kullanıcı ve detaylarını içeren JSON yanıtı döndür
-        return response()->json([$user,$user->detail]);
+        return response()->json(['message'=>'Kullanıcı kayıt edildi.', $user, $user->detail],201);
     }
 
     public function show($id)

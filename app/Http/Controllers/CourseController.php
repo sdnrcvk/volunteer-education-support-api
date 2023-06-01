@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Validator;
 
 class CourseController extends Controller
 {
@@ -13,7 +15,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return response()->json($courses);
+        return response()->json(['courses' => $courses],200);
     }
 
     /**
@@ -21,6 +23,19 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'title' => [
+                'required',
+                Rule::unique('courses')->where(function ($query) {
+                    return $query->whereNull('deleted_at');
+                })
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
 
         $course = new Course([
             'title' => $request->input('title'),
@@ -33,9 +48,7 @@ class CourseController extends Controller
 
         $course->save();
         
-        return response()->json($course);
-
-
+        return response()->json(['message' => 'Ders eklendi.', 'course' => $course],201);
     }
 
     /**
@@ -56,7 +69,7 @@ class CourseController extends Controller
     public function getCoursesByUser($user_id)
     {
         $courses = Course::where('user_id', $user_id)->get();
-        return response()->json($courses);
+        return response()->json(['courses' => $courses],200);
     }
 
 
