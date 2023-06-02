@@ -8,6 +8,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\UserReceivedCourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,3 +68,8 @@ Route::get("courses/{id}",[CourseController::class,"getCoursesByUser"]);
 Route::post("courses",[CourseController::class,"store"]);
 Route::put("courses/{id}",[CourseController::class,"update"]);
 Route::delete("courses/{id}",[CourseController::class,"destroy"]);
+
+//UserReceivedCourse routes
+Route::get("received-courses/{id}",[UserReceivedCourseController::class,"getReceivedCoursByUserId"]);
+Route::post("received-courses",[UserReceivedCourseController::class,"store"]);
+Route::delete("received-courses/{id}",[UserReceivedCourseController::class,"destroy"]);
