@@ -12,10 +12,22 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll()
+    {
+         $courses = Course::all();
+         return response()->json(['courses' => $courses],200);
+    }
+
     public function index()
     {
-        $courses = Course::all();
-        return response()->json(['courses' => $courses],200);
+        $courses = Course::where('is_confirm', 1)->get();
+        return response()->json(['courses' => $courses], 200);
+    }
+
+    public function indexAdmin()
+    {
+        $courses = Course::where('is_confirm', 0)->get();
+        return response()->json(['courses' => $courses], 200);
     }
 
     /**
@@ -72,8 +84,6 @@ class CourseController extends Controller
         return response()->json(['courses' => $courses],200);
     }
 
-
-
     /**
      * Update the specified resource in storage.
      */
@@ -94,6 +104,23 @@ class CourseController extends Controller
     
         return response()->json($course);
     }
+
+    /*Onaylanmamış kursları onaylamak için güncelleme işlemi yapar.*/
+    
+    public function confirmCourse($id)
+    {
+        $course = Course::find($id);
+
+        if (!$course) {
+            return response()->json(['error' => 'Kurs bulunamadı.'], 404);
+        }
+
+        $course->is_confirm = 1;
+        $course->save();
+
+        return response()->json(['message' => 'Kurs onaylandı.', 'course' => $course]);
+    }
+
     
     /**
      * Remove the specified resource from storage.

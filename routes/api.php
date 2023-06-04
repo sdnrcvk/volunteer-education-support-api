@@ -62,14 +62,17 @@ Route::post("messages",[MessageController::class,"store"]);
 Route::delete("messages/{id}", [MessageController::class,"destroy"]);
 
 //Courses routes
-Route::get("courses",[CourseController::class,"index"]);
+Route::get("courses-confirmed",[CourseController::class,"index"]);
+Route::get("courses",[CourseController::class,"indexAll"]);
+Route::get("courses-unconfirmed",[CourseController::class,"indexAdmin"]);
 Route::get("course/{id}",[CourseController::class,"show"]);
 Route::get("courses/{id}",[CourseController::class,"getCoursesByUser"]);
 Route::post("courses",[CourseController::class,"store"]);
 Route::put("courses/{id}",[CourseController::class,"update"]);
+Route::put("courses/{id}/confirm",[CourseController::class,"confirmCourse"]);
 Route::delete("courses/{id}",[CourseController::class,"destroy"]);
 
 //UserReceivedCourse routes
-Route::get("received-courses/{id}",[UserReceivedCourseController::class,"getReceivedCoursByUserId"]);
+Route::get("received-courses/{id}",[UserReceivedCourseController::class,"getReceivedCoursesByUserId"]);
 Route::post("received-courses",[UserReceivedCourseController::class,"store"]);
 Route::delete("received-courses/{id}",[UserReceivedCourseController::class,"destroy"]);
