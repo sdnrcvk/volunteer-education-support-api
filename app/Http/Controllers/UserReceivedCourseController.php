@@ -11,25 +11,38 @@ class UserReceivedCourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getReceivedCoursByUserId($userId)
+    public function getReceivedCoursesByUserId($userId)
     {
-        $receivedCourse = UserReceivedCourse::where('user_id', $userId)
+        $receivedCourses = UserReceivedCourse::where('user_id', $userId)
         ->with('course') // Kurs detaylarını ilişkili tablodan getir
         ->get();
 
-        if ($receivedCourse->isEmpty()) {
+        if ($receivedCourses->isEmpty()) {
             return response()->json(['message' => 'Kurs bulunamadı'], 404);
         }
 
         // Kullanıcının aldığı kursları ve detaylarını döndür
-        return response()->json($receivedCourse, 200);
+        return response()->json(['courses' => $receivedCourses],200);
     }
 
     public function store(Request $request)
     {
+
+        $userId = $request->input('user_id');
+        $courseId = $request->input('course_id');
+
+        // Check if the user has already received the course
+        $existingEntry = UserReceivedCourse::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->first();
+
+        if ($existingEntry) {
+            return response()->json(['message' => 'Bu kullanıcı zaten bu kursu almış.'], 422);
+        }
+
         $userReceivedCourse = new UserReceivedCourse([
-            'user_id' => $request->input('user_id'),
-            'course_id'=>$request->input('course_id')
+            'user_id' => $userId,
+            'course_id' => $courseId
         ]);
 
         $userReceivedCourse->save();
