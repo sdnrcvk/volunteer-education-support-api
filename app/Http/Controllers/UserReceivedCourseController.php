@@ -11,20 +11,30 @@ class UserReceivedCourseController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function getReceivedCoursesByUserId($userId)
+    // {
+    //     $receivedCourses = UserReceivedCourse::where('user_id', $userId)
+    //     ->with('course') // Kurs detaylarını ilişkili tablodan getir
+    //     ->get();
+
+    //     // Kullanıcının aldığı kursları ve detaylarını döndür
+    //     return response()->json(['courses' => $receivedCourses],200);
+    // }
+
     public function getReceivedCoursesByUserId($userId)
     {
         $receivedCourses = UserReceivedCourse::where('user_id', $userId)
-        ->with('course') // Kurs detaylarını ilişkili tablodan getir
-        ->get();
+            ->with('course') // Kurs detaylarını ilişkili tablodan getir
+            ->get();
 
-        if ($receivedCourses->isEmpty()) {
-            return response()->json(['message' => 'Kurs bulunamadı'], 404);
-        }
-
+        $validReceivedCourses = $receivedCourses->filter(function ($receivedCourse) {
+            return $receivedCourse->course !== null; // Eğer ilgili kurs mevcutsa listeye ekle
+        });
+        
         // Kullanıcının aldığı kursları ve detaylarını döndür
-        return response()->json(['courses' => $receivedCourses],200);
+        return response()->json(['courses' => $validReceivedCourses], 200);
     }
-
+    
     public function store(Request $request)
     {
 
