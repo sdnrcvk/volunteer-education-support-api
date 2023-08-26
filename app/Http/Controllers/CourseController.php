@@ -18,12 +18,14 @@ class CourseController extends Controller
          return response()->json(['courses' => $courses],200);
     }
 
+    /*Onaylanmış tüm kursları getirir*/
     public function index()
     {
         $courses = Course::where('is_confirm', 1)->get();
         return response()->json(['courses' => $courses], 200);
     }
 
+    /*Onay bekleyen tüm kursları getirir*/
     public function indexAdmin()
     {
         $courses = Course::where('is_confirm', 0)->get();
@@ -76,12 +78,30 @@ class CourseController extends Controller
     
         return response()->json($course);
     }
-    
 
+    /*Kullanıcının eklediği tüm kursları getirir*/
     public function getCoursesByUser($user_id)
     {
         $courses = Course::where('user_id', $user_id)->get();
         return response()->json(['courses' => $courses],200);
+    }
+
+    /*Kullanıcının eklediği onaylanmış kursları getirir*/
+    public function getConfirmedCoursesByUser($user_id)
+    {
+        $courses = Course::where('user_id', $user_id)
+                        ->where('is_confirm', 1)
+                        ->get();
+        return response()->json(['courses' => $courses], 200);
+    }
+
+    /*Kullanıcının eklediği henüz onaylanmamış kursları getirir*/
+    public function getUnconfirmedCoursesByUser($user_id)
+    {
+        $courses = Course::where('user_id', $user_id)
+                        ->where('is_confirm', 0)
+                        ->get();
+        return response()->json(['courses' => $courses], 200);
     }
 
     /**
@@ -99,7 +119,7 @@ class CourseController extends Controller
         $course->description = $request->input('description');
         $course->category_id = $request->input('category_id');
         $course->image_path = $request->input('image_path');
-        $course->is_confirm = $request->input('is_confirm');
+        //$course->is_confirm = $request->input('is_confirm');
         $course->save();
     
         return response()->json($course);

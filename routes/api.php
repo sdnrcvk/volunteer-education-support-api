@@ -67,6 +67,8 @@ Route::get("courses",[CourseController::class,"indexAll"]);
 Route::get("courses-unconfirmed",[CourseController::class,"indexAdmin"]);
 Route::get("course/{id}",[CourseController::class,"show"]);
 Route::get("courses/{id}",[CourseController::class,"getCoursesByUser"]);
+Route::get("courses-confirmed/{id}",[CourseController::class,"getConfirmedCoursesByUser"]);
+Route::get("courses-unconfirmed/{id}",[CourseController::class,"getUnconfirmedCoursesByUser"]);
 Route::post("courses",[CourseController::class,"store"]);
 Route::put("courses/{id}",[CourseController::class,"update"]);
 Route::put("courses/{id}/confirm",[CourseController::class,"confirmCourse"]);
