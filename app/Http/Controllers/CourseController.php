@@ -65,19 +65,17 @@ class CourseController extends Controller
         return response()->json(['message' => 'Ders eklendi.', 'course' => $course],201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $course = Course::find($id);
-    
-        if(!$course) {
+        $course = Course::with(['user', 'category'])->find($id);
+
+        if (!$course) {
             return response()->json(['error' => 'Kurs bulunamadı.'], 404);
         }
-    
+
         return response()->json($course);
     }
+
 
     /*Kullanıcının eklediği tüm kursları getirir*/
     public function getCoursesByUser($user_id)
