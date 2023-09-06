@@ -22,7 +22,7 @@ class UserController extends Controller
 
              $token = $user->createToken('my-app-token')->plainTextToken;
 
-             $userWithDetails = User::with('detail')->find($user->id);
+             $userWithDetails = User::with('detail','detail.city', 'detail.district')->find($user->id);
 
             $response = [
                 'user' => $userWithDetails,

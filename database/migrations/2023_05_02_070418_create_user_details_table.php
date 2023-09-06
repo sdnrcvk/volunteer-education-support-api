@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('task_definition')->nullable();
             $table->date('birthdate');
             $table->string('phone_number')->unique();
-            $table->enum('gender', ['male', 'female', 'unselected'])->default('unselected');
+            $table->enum('gender', ['Erkek', 'Kadın', 'Seçilmedi'])->default('Seçilmedi');
             $table->foreignId('city_id')->constraint();
             $table->foreignId('district_id')->constraint();
             $table->string('image_path')->nullable();

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\District;
 
 class City extends Model
 {
@@ -16,4 +17,9 @@ class City extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function districts()
+    {
+        return $this->hasMany(District::class);
+    }
 }
